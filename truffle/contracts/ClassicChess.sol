@@ -8,25 +8,30 @@ contract ClassicChess {
         Side side;
     }
     
+    address private host;
     Player private playerOne;
     Player private playerTwo;
     uint private prizePool;
     uint private durationPerMove;
+    bool gameStarted;
 
     modifier bettable(uint bet) {
         require(msg.value > 0);
         require(msg.value == bet);
         _;
     }
+
+    modifier joinable(uint bet) {
+        require(msg.value == bet);
+        require(msg.value == prizePool);
+        assert(!gameStarted);
+        _;
+    }
     
     function ClassicChess(uint bet, uint _durationPerMove) payable public bettable(bet) {
+        host = msg.sender;
         prizePool = bet;
         durationPerMove = _durationPerMove;
-        playerOne = Player({ addr: msg.sender, side: getHostSide() });
-    }
-
-    function getPlayerOne() public view returns (Side) {
-        return playerOne.side;
     }
 
     function getPrizePool() public view returns (uint) {
@@ -35,6 +40,26 @@ contract ClassicChess {
 
     function getDurationPerMove() public view returns (uint) {
         return durationPerMove;
+    }
+
+    function joinGame(uint bet) public payable joinable(bet) {
+        initializePlayers();
+        
+        prizePool += bet;
+        gameStarted = true;
+    }
+
+    function initializePlayers() private {
+        playerOne = Player({ addr: host, side: getHostSide() });
+        Side playerTwoSide;
+
+        if (playerOne.side == Side.White) {
+            playerTwoSide = Side.Black;
+        } else {
+            playerTwoSide = Side.White;
+        }
+
+        playerTwo = Player({ addr: msg.sender, side: playerTwoSide });
     }
 
     function getHostSide() view private returns (Side) {

@@ -19,7 +19,8 @@ contract ClassicChess {
     uint private durationPerMove;
     bool gameStarted;
     address toMove;
-    string[] moves;
+    mapping(uint => string) halfMoves;
+    uint currentHalfMove;
 
     modifier bettable(uint bet) {
         require(msg.value > 0);
@@ -43,7 +44,8 @@ contract ClassicChess {
         host = msg.sender;
         prizePool = bet;
         durationPerMove = _durationPerMove;
-
+        currentHalfMove = 1;
+        
         OnGameCreated(host, prizePool, durationPerMove);
     }
 
@@ -59,6 +61,10 @@ contract ClassicChess {
         return toMove;
     }
 
+    function getHalfMove(uint halfMove) public view returns (string) {
+        return halfMoves[halfMove];
+    }
+
     function joinGame(uint bet) public payable joinable(bet) {
         initializePlayers();
         
@@ -69,7 +75,8 @@ contract ClassicChess {
     }
 
     function makeMove(string move) public movable {
-        moves.push(move);
+        halfMoves[currentHalfMove] = move;
+        currentHalfMove++;
 
         toMove = (toMove == playerOne.addr) ? playerTwo.addr : playerOne.addr;
 

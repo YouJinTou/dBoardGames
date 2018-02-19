@@ -10,6 +10,7 @@ contract ClassicChess {
 
     event OnGameCreated(address, uint, uint);
     event OnPlayerJoined(address, Side, Side);
+    event OnMoveMade(address, string);
     
     address private host;
     Player private playerOne;
@@ -17,6 +18,8 @@ contract ClassicChess {
     uint private prizePool;
     uint private durationPerMove;
     bool gameStarted;
+    address toMove;
+    string[] moves;
 
     modifier bettable(uint bet) {
         require(msg.value > 0);
@@ -27,7 +30,12 @@ contract ClassicChess {
     modifier joinable(uint bet) {
         require(msg.value == bet);
         require(msg.value == prizePool);
-        assert(!gameStarted);
+        require(!gameStarted);
+        _;
+    }
+
+    modifier movable() {
+        require(msg.sender == toMove);
         _;
     }
     
@@ -47,6 +55,10 @@ contract ClassicChess {
         return durationPerMove;
     }
 
+    function playerToMove() public view returns (address) {
+        return toMove;
+    }
+
     function joinGame(uint bet) public payable joinable(bet) {
         initializePlayers();
         
@@ -56,14 +68,24 @@ contract ClassicChess {
         OnPlayerJoined(msg.sender, playerOne.side, playerTwo.side);
     }
 
+    function makeMove(string move) public movable {
+        moves.push(move);
+
+        toMove = (toMove == playerOne.addr) ? playerTwo.addr : playerOne.addr;
+
+        OnMoveMade(msg.sender, move);
+    }
+
     function initializePlayers() private {
         playerOne = Player({ addr: host, side: getHostSide() });
         Side playerTwoSide;
 
         if (playerOne.side == Side.White) {
             playerTwoSide = Side.Black;
+            toMove = host;
         } else {
             playerTwoSide = Side.White;
+            toMove = msg.sender;
         }
 
         playerTwo = Player({ addr: msg.sender, side: playerTwoSide });

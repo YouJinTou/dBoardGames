@@ -10,7 +10,7 @@ contract ClassicChess {
 
     event OnGameCreated(address, uint, uint);
     event OnPlayerJoined(address, Side, Side);
-    event OnMoveMade(address, string);
+    event OnMoveMade(address, string, uint);
     
     address private host;
     Player private playerOne;
@@ -36,6 +36,7 @@ contract ClassicChess {
     }
 
     modifier movable() {
+        require(gameStarted);
         require(msg.sender == toMove);
         _;
     }
@@ -45,7 +46,7 @@ contract ClassicChess {
         prizePool = bet;
         durationPerMove = _durationPerMove;
         currentHalfMove = 1;
-        
+
         OnGameCreated(host, prizePool, durationPerMove);
     }
 
@@ -76,11 +77,12 @@ contract ClassicChess {
 
     function makeMove(string move) public movable {
         halfMoves[currentHalfMove] = move;
-        currentHalfMove++;
 
         toMove = (toMove == playerOne.addr) ? playerTwo.addr : playerOne.addr;
 
-        OnMoveMade(msg.sender, move);
+        OnMoveMade(msg.sender, move, currentHalfMove);
+
+        currentHalfMove++;
     }
 
     function initializePlayers() private {

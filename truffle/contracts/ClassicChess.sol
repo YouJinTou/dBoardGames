@@ -7,6 +7,9 @@ contract ClassicChess {
         address addr;
         Side side;
     }
+
+    event OnGameCreated(address, uint, uint);
+    event OnPlayerJoined(address, Side, Side);
     
     address private host;
     Player private playerOne;
@@ -32,6 +35,8 @@ contract ClassicChess {
         host = msg.sender;
         prizePool = bet;
         durationPerMove = _durationPerMove;
+
+        OnGameCreated(host, prizePool, durationPerMove);
     }
 
     function getPrizePool() public view returns (uint) {
@@ -47,6 +52,8 @@ contract ClassicChess {
         
         prizePool += bet;
         gameStarted = true;
+
+        OnPlayerJoined(msg.sender, playerOne.side, playerTwo.side);
     }
 
     function initializePlayers() private {

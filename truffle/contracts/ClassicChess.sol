@@ -5,7 +5,7 @@ contract ClassicChess {
     
     struct Player {
         address addr;
-        Side color;
+        Side side;
     }
     
     Player private playerOne;
@@ -14,6 +14,7 @@ contract ClassicChess {
     uint private durationPerMove;
 
     modifier bettable(uint bet) {
+        require(msg.value > 0);
         require(msg.value == bet);
         _;
     }
@@ -21,13 +22,24 @@ contract ClassicChess {
     function ClassicChess(uint bet, uint _durationPerMove) payable public bettable(bet) {
         prizePool = bet;
         durationPerMove = _durationPerMove;
+        playerOne = Player({ addr: msg.sender, side: getHostSide() });
+    }
+
+    function getPlayerOne() public view returns (Side) {
+        return playerOne.side;
     }
 
     function getPrizePool() public view returns (uint) {
         return prizePool;
     }
 
-     function getDurationPerMove() public view returns (uint) {
+    function getDurationPerMove() public view returns (uint) {
         return durationPerMove;
+    }
+
+    function getHostSide() view private returns (Side) {
+        uint side = uint(block.blockhash(block.number-1)) % 2;
+
+        return Side(side);
     }
 }

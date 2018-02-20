@@ -11,6 +11,7 @@ contract ClassicChess {
     event OnGameCreated(address, uint, uint);
     event OnPlayerJoined(address, Side, Side);
     event OnMoveMade(address, string, uint);
+    event OnGameEnded(address, uint);
     
     address private host;
     Player private playerOne;
@@ -18,6 +19,7 @@ contract ClassicChess {
     uint private prizePool;
     uint private durationPerMove;
     bool gameStarted;
+    bool gameEnded;
     address toMove;
     mapping(uint => string) halfMoves;
     uint currentHalfMove;
@@ -32,11 +34,20 @@ contract ClassicChess {
         require(msg.value == bet);
         require(msg.value == prizePool);
         require(!gameStarted);
+        require(!gameEnded);
         _;
     }
 
     modifier movable() {
         require(gameStarted);
+        require(!gameEnded);
+        require(msg.sender == toMove);
+        _;
+    }
+
+    modifier resignable() {
+        require(gameStarted);
+        require(!gameEnded);
         require(msg.sender == toMove);
         _;
     }
@@ -83,6 +94,16 @@ contract ClassicChess {
         OnMoveMade(msg.sender, move, currentHalfMove);
 
         currentHalfMove++;
+    }
+
+    function resignGame() public resignable {
+        address winner = (toMove == playerOne.addr) ? playerTwo.addr : playerOne.addr;
+
+        winner.transfer(prizePool);
+
+        gameEnded = true;
+
+        OnGameEnded(msg.sender, currentHalfMove);
     }
 
     function initializePlayers() private {

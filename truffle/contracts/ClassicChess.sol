@@ -12,7 +12,7 @@ contract ClassicChess {
     event OnPlayerJoined(address, Side, Side);
     event OnMoveMade(address, string, uint);
     event OnGameEnded(address, uint);
-    
+
     address private host;
     Player private playerOne;
     Player private playerTwo;
@@ -23,6 +23,7 @@ contract ClassicChess {
     address toMove;
     mapping(uint => string) halfMoves;
     uint currentHalfMove;
+    uint lastMoveTimestamp;
 
     modifier bettable() {
         require(msg.value > 0);
@@ -51,6 +52,14 @@ contract ClassicChess {
         require(msg.sender == toMove);
         _;
     }
+
+    modifier claimable() {
+        require(msg.sender == getOtherPlayer());
+        require(gameStarted);
+        require(!gameEnded);
+        require(now > lastMoveTimestamp + durationPerMove);
+        _;
+    }
     
     function ClassicChess(uint _durationPerMove) payable public bettable() {
         host = msg.sender;
@@ -77,11 +86,20 @@ contract ClassicChess {
         return halfMoves[halfMove];
     }
 
+    function tryClaimWinOnTime() public claimable {
+        gameEnded = true;
+
+        msg.sender.transfer(prizePool);
+
+        OnGameEnded(msg.sender, currentHalfMove);
+    }
+
     function joinGame() public payable joinable() {
         initializePlayers();
         
-        prizePool += msg.value;
         gameStarted = true;
+        prizePool += msg.value;
+        lastMoveTimestamp = now;
 
         OnPlayerJoined(msg.sender, playerOne.side, playerTwo.side);
     }
@@ -89,7 +107,8 @@ contract ClassicChess {
     function makeMove(string move) public movable {
         halfMoves[currentHalfMove] = move;
 
-        toMove = (toMove == playerOne.addr) ? playerTwo.addr : playerOne.addr;
+        toMove = getOtherPlayer();
+        lastMoveTimestamp = now;
 
         OnMoveMade(msg.sender, move, currentHalfMove);
 
@@ -97,9 +116,7 @@ contract ClassicChess {
     }
 
     function resignGame() public resignable {
-        address winner = (toMove == playerOne.addr) ? playerTwo.addr : playerOne.addr;
-
-        winner.transfer(prizePool);
+        getOtherPlayer().transfer(prizePool);
 
         gameEnded = true;
 
@@ -121,9 +138,13 @@ contract ClassicChess {
         playerTwo = Player({ addr: msg.sender, side: playerTwoSide });
     }
 
-    function getHostSide() view private returns (Side) {
+    function getHostSide() private view returns (Side) {
         uint side = uint(block.blockhash(block.number-1)) % 2;
 
         return Side(side);
+    }
+
+    function getOtherPlayer() private view returns (address) {
+        return (toMove == playerOne.addr) ? playerTwo.addr : playerOne.addr;
     }
 }

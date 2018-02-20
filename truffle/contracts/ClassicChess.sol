@@ -95,9 +95,10 @@ contract ClassicChess {
     }
 
     function joinGame() public payable joinable() {
+        gameStarted = true;
+        
         initializePlayers();
         
-        gameStarted = true;
         prizePool += msg.value;
         lastMoveTimestamp = now;
 
@@ -116,9 +117,9 @@ contract ClassicChess {
     }
 
     function resignGame() public resignable {
-        getOtherPlayer().transfer(prizePool);
-
         gameEnded = true;
+
+        getOtherPlayer().transfer(prizePool);
 
         OnGameEnded(msg.sender, currentHalfMove, now);
     }

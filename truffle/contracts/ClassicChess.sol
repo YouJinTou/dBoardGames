@@ -24,14 +24,14 @@ contract ClassicChess {
     mapping(uint => string) halfMoves;
     uint currentHalfMove;
 
-    modifier bettable(uint bet) {
+    modifier bettable() {
         require(msg.value > 0);
-        require(msg.value == bet);
+        require(!gameStarted);
+        require(!gameEnded);
         _;
     }
 
-    modifier joinable(uint bet) {
-        require(msg.value == bet);
+    modifier joinable() {
         require(msg.value == prizePool);
         require(!gameStarted);
         require(!gameEnded);
@@ -52,9 +52,9 @@ contract ClassicChess {
         _;
     }
     
-    function ClassicChess(uint bet, uint _durationPerMove) payable public bettable(bet) {
+    function ClassicChess(uint _durationPerMove) payable public bettable() {
         host = msg.sender;
-        prizePool = bet;
+        prizePool = msg.value;
         durationPerMove = _durationPerMove;
         currentHalfMove = 1;
 
@@ -77,10 +77,10 @@ contract ClassicChess {
         return halfMoves[halfMove];
     }
 
-    function joinGame(uint bet) public payable joinable(bet) {
+    function joinGame() public payable joinable() {
         initializePlayers();
         
-        prizePool += bet;
+        prizePool += msg.value;
         gameStarted = true;
 
         OnPlayerJoined(msg.sender, playerOne.side, playerTwo.side);

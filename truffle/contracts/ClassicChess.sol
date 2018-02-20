@@ -8,10 +8,10 @@ contract ClassicChess {
         Side side;
     }
 
-    event OnGameCreated(address, uint, uint);
+    event OnGameCreated(address, uint, uint, uint);
     event OnPlayerJoined(address, Side, Side);
-    event OnMoveMade(address, string, uint);
-    event OnGameEnded(address, uint);
+    event OnMoveMade(address, string, uint, uint);
+    event OnGameEnded(address, uint, uint);
 
     modifier bettable() {
         require(msg.value > 0);
@@ -67,7 +67,7 @@ contract ClassicChess {
         durationPerMove = _durationPerMove;
         currentHalfMove = 1;
 
-        OnGameCreated(host, prizePool, durationPerMove);
+        OnGameCreated(host, prizePool, durationPerMove, now);
     }
 
     function getPrizePool() public view returns (uint) {
@@ -91,7 +91,7 @@ contract ClassicChess {
 
         msg.sender.transfer(prizePool);
 
-        OnGameEnded(msg.sender, currentHalfMove);
+        OnGameEnded(msg.sender, currentHalfMove, now);
     }
 
     function joinGame() public payable joinable() {
@@ -110,7 +110,7 @@ contract ClassicChess {
         toMove = getOtherPlayer();
         lastMoveTimestamp = now;
 
-        OnMoveMade(msg.sender, move, currentHalfMove);
+        OnMoveMade(msg.sender, move, currentHalfMove, now);
 
         currentHalfMove++;
     }
@@ -120,7 +120,7 @@ contract ClassicChess {
 
         gameEnded = true;
 
-        OnGameEnded(msg.sender, currentHalfMove);
+        OnGameEnded(msg.sender, currentHalfMove, now);
     }
 
     function initializePlayers() private {

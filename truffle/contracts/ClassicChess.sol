@@ -49,6 +49,9 @@ contract ClassicChess {
         _;
     }
 
+    uint private constant PERCENT_FEE = 1;
+
+    address private organizer;
     address private host;
     Player private playerOne;
     Player private playerTwo;
@@ -62,6 +65,7 @@ contract ClassicChess {
     uint lastMoveTimestamp;
     
     function ClassicChess(uint _durationPerMove) payable public bettable() {
+        organizer = 0x7f3658c9c847d00ba0c9692c400b54552bbfba53;
         host = msg.sender;
         prizePool = msg.value;
         durationPerMove = _durationPerMove;
@@ -72,6 +76,10 @@ contract ClassicChess {
 
     function getPrizePool() public view returns (uint) {
         return prizePool;
+    }
+
+    function getFee() public view returns (uint) {
+        return (prizePool * PERCENT_FEE) / 100;
     }
 
     function getDurationPerMove() public view returns (uint) {
@@ -101,6 +109,8 @@ contract ClassicChess {
         
         prizePool += msg.value;
         lastMoveTimestamp = now;
+
+        payOrganizer();
 
         OnPlayerJoined(msg.sender, playerOne.side, playerTwo.side);
     }
@@ -143,6 +153,13 @@ contract ClassicChess {
         uint side = uint(block.blockhash(block.number-1)) % 2;
 
         return Side(side);
+    }
+
+    function payOrganizer() private {
+        uint fee = (prizePool * PERCENT_FEE) / 100;
+        prizePool -= fee;
+
+        organizer.transfer(fee);
     }
 
     function getOtherPlayer() private view returns (address) {

@@ -13,18 +13,6 @@ contract ClassicChess {
     event OnMoveMade(address, string, uint);
     event OnGameEnded(address, uint);
 
-    address private host;
-    Player private playerOne;
-    Player private playerTwo;
-    uint private prizePool;
-    uint private durationPerMove;
-    bool gameStarted;
-    bool gameEnded;
-    address toMove;
-    mapping(uint => string) halfMoves;
-    uint currentHalfMove;
-    uint lastMoveTimestamp;
-
     modifier bettable() {
         require(msg.value > 0);
         require(!gameStarted);
@@ -60,6 +48,18 @@ contract ClassicChess {
         require(now > lastMoveTimestamp + durationPerMove);
         _;
     }
+
+    address private host;
+    Player private playerOne;
+    Player private playerTwo;
+    uint private prizePool;
+    uint private durationPerMove;
+    bool gameStarted;
+    bool gameEnded;
+    address toMove;
+    mapping(uint => string) halfMoves;
+    uint currentHalfMove;
+    uint lastMoveTimestamp;
     
     function ClassicChess(uint _durationPerMove) payable public bettable() {
         host = msg.sender;

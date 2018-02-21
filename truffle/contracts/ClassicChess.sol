@@ -66,7 +66,7 @@ contract ClassicChess {
     uint lastMoveTimestamp;
     
     function ClassicChess(uint _durationPerMove) payable public bettable(_durationPerMove) {
-        organizer = 0x7f3658c9c847d00ba0c9692c400b54552bbfba53;
+        organizer = 0x7f3658c9C847d00BA0C9692c400B54552bBFBA53;
         host = msg.sender;
         prizePool = msg.value;
         durationPerMove = _durationPerMove;

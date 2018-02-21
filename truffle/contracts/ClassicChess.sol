@@ -13,10 +13,11 @@ contract ClassicChess {
     event OnMoveMade(address, string, uint, uint);
     event OnGameEnded(address, uint, uint);
 
-    modifier bettable() {
+    modifier bettable(uint _durationPerMove) {
         require(msg.value > 0);
         require(!gameStarted);
         require(!gameEnded);
+        require(_durationPerMove >= 1 minutes);
         _;
     }
 
@@ -64,7 +65,7 @@ contract ClassicChess {
     uint currentHalfMove;
     uint lastMoveTimestamp;
     
-    function ClassicChess(uint _durationPerMove) payable public bettable() {
+    function ClassicChess(uint _durationPerMove) payable public bettable(_durationPerMove) {
         organizer = 0x7f3658c9c847d00ba0c9692c400b54552bbfba53;
         host = msg.sender;
         prizePool = msg.value;

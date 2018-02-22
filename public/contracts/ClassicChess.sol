@@ -91,6 +91,10 @@ contract ClassicChess {
         return toMove;
     }
 
+    function getHalfMovesCount() public view returns (uint) {
+        return currentHalfMove;
+    }
+
     function getHalfMove(uint halfMove) public view returns (string) {
         return halfMoves[halfMove];
     }

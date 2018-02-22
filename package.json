@@ -1,0 +1,24 @@
+{
+  "name": "dboardgames",
+  "version": "1.0.0",
+  "description": "Decentralized board games",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "\u0016https://github.com/YouJinTou/dBoardGames"
+  },
+  "keywords": [
+    "blockchain",
+    "board",
+    "games"
+  ],
+  "author": "Dimitar Dimitrov",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "express": "^4.16.2",
+    "solc": "^0.4.20"
+  }
+}

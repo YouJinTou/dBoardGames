@@ -1,9 +1,9 @@
 var ClassicChess = function () {
-    function createGame(account, wager, durationPerMove) {
-        var game = contract.getPrototype().new(
+    this.createGame = function (account, wager, durationPerMove) {
+        var game = contract.prototype.new(
             durationPerMove,
             {
-                data: '0x' + contract.getBytecode(),
+                data: '0x' + contract.bytecode,
                 from: account,
                 value: wager,
                 gas: 1777777
@@ -11,10 +11,6 @@ var ClassicChess = function () {
                 console.log(error);
                 console.log(result);
             });
-    }
-
-    return {
-        createGame: createGame
     }
 };
 

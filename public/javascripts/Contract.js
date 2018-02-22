@@ -1,27 +1,15 @@
 var Contract = function () {
-    var contract;
-    var bytecode;
+    var self = this;
+    this.prototype;
+    this.bytecode;
 
-    setContract();    
-
-    function getPrototype() {
-        return contract;
-    }
-
-    function getBytecode() {
-        return bytecode;
-    }
+    setContract();
 
     async function setContract() {
         var contractAbi = await fetch('./contracts/ClassicChess.abi');
         var contractBin = await fetch('./contracts/ClassicChess.bin');
-        bytecode = await contractBin.text();
-        contract = web3.eth.contract(JSON.parse(await contractAbi.text()));
-    }
-
-    return {
-        getPrototype: getPrototype,
-        getBytecode: getBytecode
+        self.bytecode = await contractBin.text();
+        self.prototype = web3.eth.contract(JSON.parse(await contractAbi.text()));
     }
 };
 

@@ -19,8 +19,8 @@ var ClassicChess = function () {
     }
 
     async function setContract() {
-        var contractAbi = await fetch('./ClassicChess.abi');
-        var contractBin = await fetch('./ClassicChess.bin');
+        var contractAbi = await fetch('./contracts/ClassicChess.abi');
+        var contractBin = await fetch('./contracts/ClassicChess.bin');
         bytecode = await contractBin.text();
         contract = web3.eth.contract(JSON.parse(await contractAbi.text()));
     }

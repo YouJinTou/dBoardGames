@@ -1,14 +1,9 @@
 var ClassicChess = function () {
-    var contract;
-    var bytecode;
-
-    setContract();
-
     function createGame(account, wager, durationPerMove) {
-        var game = contract.new(
+        var game = contract.getPrototype().new(
             durationPerMove,
             {
-                data: '0x' + bytecode,
+                data: '0x' + contract.getBytecode(),
                 from: account,
                 value: wager,
                 gas: 1777777
@@ -16,13 +11,6 @@ var ClassicChess = function () {
                 console.log(error);
                 console.log(result);
             });
-    }
-
-    async function setContract() {
-        var contractAbi = await fetch('./contracts/ClassicChess.abi');
-        var contractBin = await fetch('./contracts/ClassicChess.bin');
-        bytecode = await contractBin.text();
-        contract = web3.eth.contract(JSON.parse(await contractAbi.text()));
     }
 
     return {

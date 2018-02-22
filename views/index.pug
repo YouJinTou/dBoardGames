@@ -1,20 +1,11 @@
 extends layout
 
 block content
-  label Wager
-  input(
-    id='wager',
-    type='text'
-  )
+   div
+    label Wager
+    input(id='wager', type='text')
 
-  label Duration per move
-  input(
-    id='move-duration',
-    type='text'
-  )
+    label Duration per move
+    input(id='move-duration', type='text')
 
-  button(
-    type='button',
-    text='Create game',
-    onclick='createGame()'
-  )
+    button(type='button', text='Create game', onclick='createGame()')

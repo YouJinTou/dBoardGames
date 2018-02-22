@@ -3,7 +3,7 @@ var Service = function () {
         '0xa13e2f1906854bc8c6695ada6c2d13154a0889f5'
     ];
 
-    function getGames() {
+    this.getGames = function () {
         var games = [];
 
         contracts.forEach(function (c) {
@@ -26,10 +26,6 @@ var Service = function () {
         })
 
         return moves;
-    }
-
-    return {
-        getGames: getGames
     }
 };
 

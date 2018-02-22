@@ -1,12 +1,32 @@
 var Service = function () {
     var contracts = [
-        '0x944f35cb015659C7c10E0cb8e9dB40e09920AA37',
-        '0xAF339E9cBd85ce62135048b2b6160525CC2cd42b'
+        '0xa13e2f1906854bc8c6695ada6c2d13154a0889f5'
     ];
 
-   function getGames() {
-       return contracts;
-   }
+    function getGames() {
+        var games = [];
+
+        contracts.forEach(function (c) {
+            games.push(getGameMoves(c));
+        });
+
+        return games;
+    }
+
+    function getGameMoves(gameContract) {
+        var instance = contract.prototype.at(gameContract);
+        var moves = [];
+        
+        instance.getHalfMovesCount.call((count) => {
+            for (var i = 1; i < count; i++) {
+                instance.getHalfMove.call(i, (move) => {
+                    moves.push(move);
+                });
+            }
+        })
+
+        return moves;
+    }
 
     return {
         getGames: getGames

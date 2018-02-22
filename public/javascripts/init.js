@@ -1,8 +1,8 @@
 var Initializer = function Initializer() {
     var self = this;
-    var account;
+    this.account;
 
-    function init() {
+    this.init = function () {
         window.addEventListener('load', function () {
             if (typeof web3 !== 'undefined') {
                 console.log('Metamask ON.');
@@ -16,10 +16,6 @@ var Initializer = function Initializer() {
 
             setAccount();
         });
-    }
-
-    function getAccount() {
-        return account;
     }
 
     function setAccount() {
@@ -36,13 +32,8 @@ var Initializer = function Initializer() {
                 return;
             }
 
-            account = accs[0];
+            self.account = accs[0];
         });
-    }
-
-    return {
-        init: init,
-        getAccount: getAccount
     }
 }
 

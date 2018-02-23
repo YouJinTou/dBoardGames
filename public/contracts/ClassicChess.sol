@@ -107,7 +107,7 @@ contract ClassicChess {
         OnGameEnded(msg.sender, currentHalfMove, now);
     }
 
-    function joinGame() public payable joinable() {
+    function joinGame() public payable joinable {
         gameStarted = true;
         
         initializePlayers();

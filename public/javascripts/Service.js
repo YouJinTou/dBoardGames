@@ -25,17 +25,14 @@ var Service = function () {
         return game;
     }
 
-    this.getGameMoves = function (gameContract) {
+    this.getGameMoves = async function (gameContract) {
         var instance = self.getInstance(gameContract);
         var moves = [];
+        var halfMovesCount = await promisify(cb => instance.getHalfMovesCount(cb));
 
-        instance.getHalfMovesCount.call((count) => {
-            for (var i = 1; i < count; i++) {
-                instance.getHalfMove.call(i, (move) => {
-                    moves.push(move);
-                });
-            }
-        })
+        for (var i = 0; i < halfMovesCount.s; i++) {
+            moves.push(await promisify(cb => instance.getHalfMove(i, cb)));
+        }   
 
         return moves;
     }

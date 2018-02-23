@@ -1,6 +1,6 @@
 var ClassicChess = function () {
-    this.createGame = function (account, wager, durationPerMove) {
-        var game = contract.prototype.new(
+    this.createGame = async function (account, wager, durationPerMove) {
+        await promisify(cb => contract.prototype.new(
             durationPerMove,
             {
                 data: '0x' + contract.bytecode,
@@ -15,24 +15,18 @@ var ClassicChess = function () {
                 if (result.address) {
                     service.addGame(result.address);
                 }
-            });
+            }));
     }
 
-    this.joinGame = function (account, gameContract) {
+    this.joinGame = async function (account, gameContract) {
         var instance = service.getInstance(gameContract);
-
-        instance.getPrizePool.call((error, prizePool) => {
-            instance.joinGame(
-                {
-                    from: account,
-                    value: prizePool,
-                    gas: 3000000
-                }, (error, result) => {
-                    if (error) {
-                        alert(error);
-                    }
-                });
-        });
+        var prizePool = await promisify(cb => instance.getPrizePool(cb));
+        
+        await promisify(cb => instance.joinGame({
+            from: account,
+            value: prizePool,
+            gas: 3000000
+        }, cb));
     }
 };
 

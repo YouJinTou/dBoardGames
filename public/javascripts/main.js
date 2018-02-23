@@ -1,4 +1,4 @@
-async function getGames() {
+$('#btn-list').on('click', async function () {
     var games = service.getGames();
     var $gamesList = $('#games-list');
 
@@ -7,21 +7,23 @@ async function getGames() {
     for (var g = 0; g < games.length; g++) {
         var game = await service.getGame(games[g]);
         var li = $('<li/>').text(game.durationPerMove);
-        var joinGameButton = $('<button/>').text('Join game');
+        var joinGameButton = $('<button />')
+            .addClass('btn-joinable')
+            .attr('data-game-address', games[g])
+            .text('Join game');
 
         li.append(joinGameButton);
         li.appendTo($gamesList);
     }
-}
+});
 
-
-function createGame() {
+$('#btn-create').on('click', async function () {
     var wager = web3.toWei($('#wager').val(), 'ether');
     var durationPerMove = $('#move-duration').val();
 
-    classicChess.createGame(initializer.account, wager, durationPerMove);
-}
+    await classicChess.createGame(initializer.account, wager, durationPerMove);
+});
 
-function joinGame() {
-    classicChess.joinGame(initializer.account, '0xad1234cf3851e9bd071fa88a6e709f63d8675395');
-}
+$(document).on('click', '.btn-joinable', async function () {
+    await classicChess.joinGame(initializer.account, $(this).data('game-address'));
+});

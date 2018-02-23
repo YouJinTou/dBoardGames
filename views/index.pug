@@ -8,11 +8,9 @@ block content
         label Duration per move
         input(id='move-duration', type='text')
 
-        button(type='button', onclick='createGame();') Create game
+        button(id='btn-create', type='button') Create game
     div
-        button(type='button', onclick='joinGame();') Join game
-    div
-        button(type='button', onclick='getGames();') List games
+        button(id='btn-list', type='button') List games
 
     div
         ul#games-list

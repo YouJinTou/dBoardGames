@@ -19,7 +19,7 @@ var ClassicChess = function () {
     }
 
     this.joinGame = function (account, gameContract) {
-        var instance = contract.prototype.at(gameContract);
+        var instance = service.getInstance(gameContract);
 
         instance.getPrizePool.call((error, prizePool) => {
             instance.joinGame(

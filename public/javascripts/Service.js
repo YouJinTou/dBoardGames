@@ -21,6 +21,10 @@ var Service = function () {
 
         return moves;
     }
+
+    this.addGame= function (gameContract) {
+        contracts.push(gameContract);
+    }
 };
 
 var service = new Service();

@@ -8,9 +8,31 @@ var ClassicChess = function () {
                 value: wager,
                 gas: 1777777
             }, function (error, result) {
-                console.log(error);
-                console.log(result);
+                if (error) {
+                    alert(error);
+                }
+
+                if (result.address) {
+                    service.addGame(result.address);
+                }
             });
+    }
+
+    this.joinGame = function (account, gameContract) {
+        var instance = contract.prototype.at(gameContract);
+
+        instance.getPrizePool.call((error, prizePool) => {
+            instance.joinGame(
+                {
+                    from: account,
+                    value: prizePool,
+                    gas: 3000000
+                }, (error, result) => {
+                    if (error) {
+                        alert(error);
+                    }
+                });
+        });
     }
 };
 

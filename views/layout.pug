@@ -3,11 +3,14 @@ html
   head
     title #{title}
     link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    block content
+
     block scripts
+      script(src='/javascripts/external/jquery-3.3.1.min.js')
+      script(src='/javascripts/async.js')
       script(src='/javascripts/init.js')
       script(src='/javascripts/Contract.js')
       script(src='/javascripts/Service.js')
       script(src='/javascripts/ClassicChess.js')
       script(src='/javascripts/main.js')
-  body
-    block content

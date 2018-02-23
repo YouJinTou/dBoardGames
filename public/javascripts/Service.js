@@ -1,19 +1,13 @@
 var Service = function () {
     var contracts = [
-        '0xa13e2f1906854bc8c6695ada6c2d13154a0889f5'
+        '0xd9801934089743a17ba06180062b40ab15b596fb'
     ];
 
     this.getGames = function () {
-        var games = [];
-
-        contracts.forEach(function (c) {
-            games.push(getGameMoves(c));
-        });
-
-        return games;
+        return contracts;
     }
 
-    function getGameMoves(gameContract) {
+    this.getGameMoves = function (gameContract) {
         var instance = contract.prototype.at(gameContract);
         var moves = [];
         

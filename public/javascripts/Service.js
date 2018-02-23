@@ -15,6 +15,7 @@ var Service = function () {
     this.getGame = async function (address) {
         var instance = self.getInstance(address);
         var game = {
+            address: address,
             currentMove: parseInt(await promisify(cb => instance.getHalfMovesCount(cb)) / 2),
             playerToMove: await promisify(cb => instance.playerToMove(cb)),
             durationPerMove: await promisify(cb => instance.getDurationPerMove(cb)),

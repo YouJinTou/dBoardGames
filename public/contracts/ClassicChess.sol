@@ -17,7 +17,7 @@ contract ClassicChess {
         require(msg.value > 0);
         require(!gameStarted);
         require(!gameEnded);
-        require(_durationPerMove >= 1 minutes);
+        require(_durationPerMove >= 30 minutes);
         _;
     }
 
@@ -73,7 +73,7 @@ contract ClassicChess {
     uint private lastMoveTimestamp;
     
     function ClassicChess(uint _durationPerMove) payable public bettable(_durationPerMove) {
-        organizer = 0x7f3658c9C847d00BA0C9692c400B54552bBFBA53;
+        organizer = 0xCa411557A6E7f84269FAc1e1d397671aA18A2364;
         host = msg.sender;
         prizePool = msg.value;
         durationPerMove = _durationPerMove;
@@ -159,19 +159,18 @@ contract ClassicChess {
 
         getOtherPlayer().transfer(prizePool);
 
-        OnGameEnded(msg.sender, currentHalfMove, now);
+        OnGameEnded(msg.sender, currentHalfMove - 1, now);
     }
 
     function enforceDraw() public enforceable {
         gameEnded = true;
-
         uint returnableBet = prizePool / 2;
 
         playerOne.addr.transfer(returnableBet);
 
         playerTwo.addr.transfer(returnableBet);
 
-        OnGameEnded(msg.sender, currentHalfMove, now);
+        OnGameEnded(msg.sender, currentHalfMove - 1, now);
     }
 
     function initializePlayers() private {

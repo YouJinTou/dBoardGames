@@ -30,8 +30,8 @@ module.exports = {
         return moves;
     },
     enforceGameEnd: async function (contractAddress, condition) {
-        var account = '0xF2Db66669b06b32fc7bbB7C17A679e8CdB6d80Cd';
-        var key = new Buffer('8c39ca708bf4a678449d070e9e7b12853c4f7eb97c764c63ee2fb0e481841a69', 'hex')
+        var account = '0xCa411557A6E7f84269FAc1e1d397671aA18A2364';
+        var key = new Buffer('2ce5e697cc8979a3e5032a995e0077c30be3a777213020f3ea1db6681a6f720c', 'hex')
         var abi = fs.readFileSync('./public/contracts/ClassicChess_sol_ClassicChess.abi');
         var bytecode = fs.readFileSync('./public/contracts/ClassicChess_sol_ClassicChess.abi');
         var contract = web3.eth.contract(abi)

@@ -11,7 +11,8 @@ var Initializer = function Initializer() {
             } else {
                 console.log('Running locally.');
 
-                window.web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
+                window.web3 = new Web3(
+                    new Web3.providers.HttpProvider("https://ropsten.infura.io/Mjg9P5FAlAk5TUZqjizC"));
             }
 
             setAccount();

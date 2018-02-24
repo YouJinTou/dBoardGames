@@ -6,6 +6,11 @@ $('#btn-list').on('click', async function () {
 
     for (var g = 0; g < games.length; g++) {
         var game = await service.getGame(games[g]);
+
+        if (!game) {
+            continue;
+        }
+
         var li = $('<li/>').text(game.durationPerMove);
 
         if (game.gameStarted) {

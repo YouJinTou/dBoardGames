@@ -11,18 +11,24 @@ var Service = function () {
 
     this.getGame = async function (address) {
         var instance = self.getInstance(address);
-        var game = {
-            address: address,
-            gameStarted: await promisify(cb => instance.getGameStarted(cb)),
-            gameEnded: await promisify(cb => instance.getGameEnded(cb)),
-            currentMove: parseInt(await promisify(cb => instance.getHalfMovesCount(cb)) / 2),
-            playerToMove: await promisify(cb => instance.playerToMove(cb)),
-            durationPerMove: await promisify(cb => instance.getDurationPerMove(cb)),
-            fee: await promisify(cb => instance.getFee(cb)),
-            prizePool: await promisify(cb => instance.getPrizePool(cb)),
-        };
 
-        return game;
+        try {
+            var game = {
+                address: address,
+                gameStarted: await promisify(cb => instance.getGameStarted(cb)),
+                gameEnded: await promisify(cb => instance.getGameEnded(cb)),
+                currentMove: parseInt(await promisify(cb => instance.getHalfMovesCount(cb)) / 2),
+                playerToMove: await promisify(cb => instance.playerToMove(cb)),
+                durationPerMove: await promisify(cb => instance.getDurationPerMove(cb)),
+                fee: await promisify(cb => instance.getFee(cb)),
+                prizePool: await promisify(cb => instance.getPrizePool(cb)),
+            };
+            return game;
+        } catch (err) {
+            console.log(err);
+            
+            return null;
+        }
     }
 
     this.getGameMoves = async function (gameContract) {
@@ -41,7 +47,7 @@ var Service = function () {
         if (sessionStorage['game-contracts']) {
             sessionStorage['game-contracts'] += ',' + gameContract;
         } else {
-            sessionStorage['game-contracts'] = gameContract;            
+            sessionStorage['game-contracts'] = gameContract;
         }
     }
 

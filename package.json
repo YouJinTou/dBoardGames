@@ -22,7 +22,10 @@
   },
   "homepage": "https://github.com/YouJinTou/dBoardGames#readme",
   "dependencies": {
+    "body-parser": "^1.18.2",
+    "chess.js": "^0.10.2",
     "express": "^4.16.2",
-    "pug": "^2.0.0-rc.4"
+    "pug": "^2.0.0-rc.4",
+    "web3": "0.20.0"
   }
 }

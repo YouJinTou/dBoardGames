@@ -52,7 +52,7 @@ var Service = function () {
         }
     }
 
-    this.makeMove = async function (gameContract, move, endGameCondition) {
+    this.makeMove = async function (gameContract, move) {
         var instance = self.getInstance(gameContract);
 
         await promisify(cb => instance.makeMove(move, { gas: 100000 }, (err, result) => {
@@ -62,10 +62,8 @@ var Service = function () {
                     url: '/enforce',
                     contentType: 'application/json',
                     data: JSON.stringify({
-                        condition: endGameCondition,
                         contract: gameContract
-                    }),
-                    success: alert('Game over.')
+                    })
                   });
             }
         }));

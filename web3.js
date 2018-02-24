@@ -17,7 +17,6 @@ const promisify = (inner) =>
         })
     );
 
-
 module.exports = {
     getMoves: async function (contractAddress) {
         var instance = getContractInstance(contractAddress);

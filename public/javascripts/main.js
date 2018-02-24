@@ -39,4 +39,9 @@ $(document).on('click', '.btn-joinable', async function () {
     await classicChess.joinGame(initializer.account, $(this).data('game-address'));
 });
 
-var board = ChessBoard('board', 'start');
+$(document).on('click', '.btn-viewable', async function () {
+    var gameMoves = await service.getGameMoves($(this).data('game-address'));
+    var engine = new Engine($(this).data('game-address'));
+
+    engine.setGame(gameMoves);
+});

@@ -7,12 +7,23 @@ $('#btn-list').on('click', async function () {
     for (var g = 0; g < games.length; g++) {
         var game = await service.getGame(games[g]);
         var li = $('<li/>').text(game.durationPerMove);
-        var joinGameButton = $('<button />')
+
+        if (game.gameStarted) {
+            var viewGameButton = $('<button />')
+                .addClass('btn-viewable')
+                .attr('data-game-address', games[g])
+                .text('View game');
+
+            li.append(viewGameButton);
+        } else {
+            var joinGameButton = $('<button />')
             .addClass('btn-joinable')
             .attr('data-game-address', games[g])
             .text('Join game');
 
-        li.append(joinGameButton);
+            li.append(joinGameButton);
+        }
+
         li.appendTo($gamesList);
     }
 });

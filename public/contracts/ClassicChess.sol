@@ -58,12 +58,12 @@ contract ClassicChess {
     Player private playerTwo;
     uint private prizePool;
     uint private durationPerMove;
-    bool gameStarted;
-    bool gameEnded;
-    address toMove;
-    mapping(uint => string) halfMoves;
-    uint currentHalfMove;
-    uint lastMoveTimestamp;
+    bool private gameStarted;
+    bool private gameEnded;
+    address private toMove;
+    mapping(uint => string) private halfMoves;
+    uint private currentHalfMove;
+    uint private lastMoveTimestamp;
     
     function ClassicChess(uint _durationPerMove) payable public bettable(_durationPerMove) {
         organizer = 0x7f3658c9C847d00BA0C9692c400B54552bBFBA53;
@@ -73,6 +73,14 @@ contract ClassicChess {
         currentHalfMove = 1;
 
         OnGameCreated(host, prizePool, durationPerMove, now);
+    }
+
+    function getGameStarted() public view returns (bool) {
+        return gameStarted;
+    }
+
+    function getGameEnded() public view returns (bool) {
+        return gameEnded;
     }
 
     function getPrizePool() public view returns (uint) {

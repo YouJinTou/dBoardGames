@@ -1,5 +1,10 @@
 $('#btn-list').on('click', async function () {
     var games = service.getGames();
+
+    if (!games.length) {
+        return;
+    }
+
     var $gamesList = $('#games-list');
     var $template = $('.game-template').first();
 

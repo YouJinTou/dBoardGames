@@ -16,15 +16,24 @@ app.get('/', (req, res) => res.render('index', {
 }));
 
 app.post('/enforce', (req, res) => {
-    if (!req.body.contract || !req.body.condition) {
+    if (!req.body.contract) {
         res.status(400).send();
     }
 
-    if (!validator.conditionValid(req.body.contract, req.body.condition)) {
-        res.status(400).send();
-    }
-
-    res.status(200).send();
+    validator.getGameCondition(req.body.contract).then((condition) => {
+        switch (condition) {
+            case 'checkmate':
+            case 'draw':
+                web3.enforceGameEnd(req.body.contract, condition);
+    
+                res.status(200).send();
+    
+                break;
+            case 'continue':
+            default:
+                res.status(400);
+        }
+    });
 });
 
 app.listen(3000, () => console.log('Running on port 3000.'));

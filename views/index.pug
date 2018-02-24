@@ -18,4 +18,7 @@ block content
             h3 No games yet.
 
     div
-        div#board
+        div#board(style='width: 300px')
+        sub#to-move
+        button(id='btn-resign', type='button', hidden='hidden') Resign
+        button(id='btn-claim-win', type='button', hidden='hidden') Try to Claim a Win on Time

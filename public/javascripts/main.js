@@ -51,8 +51,13 @@ $(document).on('click', '.btn-viewable', async function () {
     engine.setGame(gameMoves);
 
     $('#btn-resign').attr('data-game-address', $(this).data('game-address')).show();
+    $('#btn-claim-win').attr('data-game-address', $(this).data('game-address')).show();
 });
 
 $(document).on('click', '#btn-resign', async function () {
     await service.resignGame($(this).data('game-address'));
+});
+
+$(document).on('click', '#btn-claim-win', async function () {
+    await service.tryClaimWinOnTime($(this).data('game-address'));
 });

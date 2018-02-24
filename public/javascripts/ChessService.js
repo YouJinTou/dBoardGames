@@ -41,6 +41,12 @@ var Service = function () {
         await promisify(cb => instance.resignGame({ gas: 100000 }, cb));
     }
 
+    this.tryClaimWinOnTime = async function (gameContract) {
+        var instance = service.getInstance(gameContract);
+
+        await promisify(cb => instance.tryClaimWinOnTime({ gas: 100000 }, cb));
+    }
+
     this.getGames = function () {
         return sessionStorage['game-contracts'].split(',');
     }

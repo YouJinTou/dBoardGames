@@ -37,11 +37,11 @@ $('#btn-create').on('click', async function () {
     var wager = web3.toWei($('#wager').val(), 'ether');
     var durationPerMove = $('#move-duration').val();
 
-    await classicChess.createGame(initializer.account, wager, durationPerMove);
+    await service.createGame(initializer.account, wager, durationPerMove);
 });
 
 $(document).on('click', '.btn-joinable', async function () {
-    await classicChess.joinGame(initializer.account, $(this).data('game-address'));
+    await service.joinGame(initializer.account, $(this).data('game-address'));
 });
 
 $(document).on('click', '.btn-viewable', async function () {
@@ -49,8 +49,10 @@ $(document).on('click', '.btn-viewable', async function () {
     var engine = new Engine($(this).data('game-address'));
 
     engine.setGame(gameMoves);
+
+    $('#btn-resign').attr('data-game-address', $(this).data('game-address')).show();
 });
 
-$(document).on('click', '.btn-resign', async function () {
-    
+$(document).on('click', '#btn-resign', async function () {
+    await service.resignGame($(this).data('game-address'));
 });

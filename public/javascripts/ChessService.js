@@ -35,6 +35,12 @@ var Service = function () {
         }, cb));
     }
 
+    this.resignGame = async function (gameContract) {
+        var instance = service.getInstance(gameContract);
+
+        await promisify(cb => instance.resignGame({ gas: 100000 }, cb));
+    }
+
     this.getGames = function () {
         return sessionStorage['game-contracts'].split(',');
     }

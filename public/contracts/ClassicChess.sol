@@ -50,7 +50,14 @@ contract ClassicChess {
         _;
     }
 
-    uint private constant PERCENT_FEE = 1;
+    modifier enforceable() {
+        require(msg.sender == organizer);
+        require(gameStarted);
+        require(!gameEnded);
+        _;
+    }
+
+    uint private constant PERCENT_FEE = 2;
 
     address private organizer;
     address private host;
@@ -143,6 +150,26 @@ contract ClassicChess {
         gameEnded = true;
 
         getOtherPlayer().transfer(prizePool);
+
+        OnGameEnded(msg.sender, currentHalfMove, now);
+    }
+
+    function enforceCheckmate() public enforceable {
+        gameEnded = true;
+
+        getOtherPlayer().transfer(prizePool);
+
+        OnGameEnded(msg.sender, currentHalfMove, now);
+    }
+
+    function enforceDraw() public enforceable {
+        gameEnded = true;
+
+        uint returnableBet = prizePool / 2;
+
+        playerOne.addr.transfer(returnableBet);
+
+        playerTwo.addr.transfer(returnableBet);
 
         OnGameEnded(msg.sender, currentHalfMove, now);
     }

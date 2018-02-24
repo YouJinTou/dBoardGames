@@ -57,8 +57,6 @@ var Service = function () {
 
         await promisify(cb => instance.makeMove(move, { gas: 100000 }, (err, result) => {
             if (!err) {
-                console.log(endGameCondition);
-                // $.post('enforce', { condition: endGameCondition, condition: gameContract })
                 $.ajax({
                     type: 'POST',
                     url: '/enforce',
@@ -70,17 +68,6 @@ var Service = function () {
                     success: alert('Game over.')
                   });
             }
-
-            // switch (endGameCondition) {
-            //     case 'checkmate':
-            //         await promisify(cb => instance.enforceCheckmate({ gas: 100000 }, cb));
-
-            //         break;
-            //     case 'draw':
-            //         await promisify(cb => instance.enforceDraw({ gas: 100000 }, cb));
-            //     default:
-            //         break;
-            // }
         }));
     }
 };

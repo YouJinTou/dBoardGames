@@ -10,23 +10,10 @@ var Engine = function (address) {
             return 'snapback';
         }
 
-        service.makeMove(address, sloppyNotation, getEndGameCondition());
+        service.makeMove(address, sloppyNotation);
     };
 
-    function getEndGameCondition() {
-        if (chess.in_checkmate()) {
-            return 'checkmate';
-        }
-
-        if (chess.in_draw()) {
-            return 'draw';
-        }
-
-        return 'checkmate';
-    }
-
     var onDragStart = function (source, piece, position, orientation) {
-        console.log(chess.game_over())
         if (chess.game_over() ||
             (chess.turn() === 'w' && piece.search(/^b/) !== -1) ||
             (chess.turn() === 'b' && piece.search(/^w/) !== -1)) {
@@ -38,7 +25,7 @@ var Engine = function (address) {
         draggable: true,
         position: 'start',
         onDragStart: onDragStart,
-        onDrop: onDrop
+        onDrop: onDrop,
     }
 
     this.setGame = function (moves) {

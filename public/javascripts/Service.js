@@ -1,8 +1,12 @@
 var Service = function () {
     var self = this;
+    // var contracts = [
+    //     '0xd9801934089743a17ba06180062b40ab15b596fb'
+    // ];
     var contracts = [
-        '0xd9801934089743a17ba06180062b40ab15b596fb'
-    ];
+        '0xfd648a7ac5d1582c54b6701d2150f5717e85528a',
+        '0x416db5284bbfde9fccfbfe23c3582e44b97652b5'
+    ]
 
     this.getInstance = function (address) {
         return contract.prototype.at(address);
@@ -16,6 +20,8 @@ var Service = function () {
         var instance = self.getInstance(address);
         var game = {
             address: address,
+            gameStarted: await promisify(cb => instance.getGameStarted(cb)),
+            gameEnded: await promisify(cb => instance.getGameEnded(cb)),
             currentMove: parseInt(await promisify(cb => instance.getHalfMovesCount(cb)) / 2),
             playerToMove: await promisify(cb => instance.playerToMove(cb)),
             durationPerMove: await promisify(cb => instance.getDurationPerMove(cb)),
@@ -31,15 +37,21 @@ var Service = function () {
         var moves = [];
         var halfMovesCount = await promisify(cb => instance.getHalfMovesCount(cb));
 
-        for (var i = 0; i < halfMovesCount.s; i++) {
+        for (var i = 1; i <= halfMovesCount.c; i++) {
             moves.push(await promisify(cb => instance.getHalfMove(i, cb)));
-        }   
+        }
 
         return moves;
     }
 
     this.addGame = function (gameContract) {
         contracts.push(gameContract);
+    }
+
+    this.makeMove = async function (gameContract, move) {
+        var instance = self.getInstance(gameContract);
+
+        await promisify(cb => instance.makeMove(move, { gas: 100000 }, cb));
     }
 };
 

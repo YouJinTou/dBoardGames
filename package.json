@@ -22,7 +22,6 @@
   },
   "homepage": "https://github.com/YouJinTou/dBoardGames#readme",
   "dependencies": {
-    "chess.js": "^0.10.2",
     "express": "^4.16.2",
     "pug": "^2.0.0-rc.4"
   }

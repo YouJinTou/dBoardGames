@@ -50,3 +50,7 @@ $(document).on('click', '.btn-viewable', async function () {
 
     engine.setGame(gameMoves);
 });
+
+$(document).on('click', '.btn-resign', async function () {
+    
+});

@@ -1,19 +1,12 @@
 var Service = function () {
     var self = this;
-    // var contracts = [
-    //     '0xd9801934089743a17ba06180062b40ab15b596fb'
-    // ];
-    var contracts = [
-        '0xfd648a7ac5d1582c54b6701d2150f5717e85528a',
-        '0x416db5284bbfde9fccfbfe23c3582e44b97652b5'
-    ]
 
     this.getInstance = function (address) {
         return contract.prototype.at(address);
     }
 
     this.getGames = function () {
-        return contracts;
+        return sessionStorage['game-contracts'].split(',');
     }
 
     this.getGame = async function (address) {
@@ -45,7 +38,11 @@ var Service = function () {
     }
 
     this.addGame = function (gameContract) {
-        contracts.push(gameContract);
+        if (sessionStorage['game-contracts']) {
+            sessionStorage['game-contracts'] += ',' + gameContract;
+        } else {
+            sessionStorage['game-contracts'] = gameContract;            
+        }
     }
 
     this.makeMove = async function (gameContract, move) {

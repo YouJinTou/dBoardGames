@@ -55,6 +55,14 @@ label {
   margin-bottom: 5px;
 }
 
+  .short-view-holder::before {
+    content: 'View';
+    display: inline;
+    float: right;
+    font-size: 25px;
+    color: white;
+  }
+
   .short-view-holder:hover {
     cursor: pointer;
   }
@@ -63,6 +71,14 @@ label {
   background-color: rgba(201, 84, 5, 0.8);
   padding: 5px;
   margin-bottom: 5px;
+}
+
+.short-join-holder::before {
+  content: 'Join';
+  display: inline;
+  float: right;
+  font-size: 25px;
+  color: white;
 }
 
   .short-join-holder:hover {

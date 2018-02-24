@@ -17,16 +17,17 @@ var Service = function () {
                 address: address,
                 gameStarted: await promisify(cb => instance.getGameStarted(cb)),
                 gameEnded: await promisify(cb => instance.getGameEnded(cb)),
-                currentMove: parseInt(await promisify(cb => instance.getHalfMovesCount(cb)) / 2),
+                currentMove: parseInt(await promisify(cb => instance.getHalfMovesCount(cb)) / 2) + 1,
                 playerToMove: await promisify(cb => instance.playerToMove(cb)),
                 durationPerMove: await promisify(cb => instance.getDurationPerMove(cb)),
                 fee: await promisify(cb => instance.getFee(cb)),
                 prizePool: await promisify(cb => instance.getPrizePool(cb)),
             };
+
             return game;
         } catch (err) {
             console.log(err);
-            
+
             return null;
         }
     }
@@ -51,10 +52,36 @@ var Service = function () {
         }
     }
 
-    this.makeMove = async function (gameContract, move) {
+    this.makeMove = async function (gameContract, move, endGameCondition) {
         var instance = self.getInstance(gameContract);
 
-        await promisify(cb => instance.makeMove(move, { gas: 100000 }, cb));
+        await promisify(cb => instance.makeMove(move, { gas: 100000 }, (err, result) => {
+            if (!err) {
+                console.log(endGameCondition);
+                // $.post('enforce', { condition: endGameCondition, condition: gameContract })
+                $.ajax({
+                    type: 'POST',
+                    url: '/enforce',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        condition: endGameCondition,
+                        contract: gameContract
+                    }),
+                    success: alert('Game over.')
+                  });
+            }
+
+            // switch (endGameCondition) {
+            //     case 'checkmate':
+            //         await promisify(cb => instance.enforceCheckmate({ gas: 100000 }, cb));
+
+            //         break;
+            //     case 'draw':
+            //         await promisify(cb => instance.enforceDraw({ gas: 100000 }, cb));
+            //     default:
+            //         break;
+            // }
+        }));
     }
 };
 

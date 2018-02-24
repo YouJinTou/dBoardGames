@@ -31,9 +31,13 @@ var Engine = function (address) {
     this.setGame = function (moves) {
         board = ChessBoard('board', self.config);
 
-        for (var m = 0; m < moves.length; m++) {
-            makeMove(moves[m]);
-            board.move(moves[m]);
+        if (moves) {
+            for (var m = 0; m < moves.length; m++) {
+                makeMove(moves[m]);
+                board.move(moves[m]);
+            }
+
+            board.orientation(chess.turn() === 'w' ? 'white' : 'black');
         }
     }
 

@@ -1,10 +1,4 @@
 var Service = function () {
-    var self = this;
-
-    this.getInstance = function (address) {
-        return contract.prototype.at(address);
-    }
-
     this.createGame = async function (account, wager, durationPerMove) {
         await promisify(cb => contract.prototype.new(
             durationPerMove,
@@ -19,15 +13,15 @@ var Service = function () {
                 }
 
                 if (result.address) {
-                    service.addGame(result.address);
+                    addGame(result.address);
                 }
             }));
     }
 
     this.joinGame = async function (account, gameContract) {
-        var instance = service.getInstance(gameContract);
+        var instance = getInstance(gameContract);
         var prizePool = await promisify(cb => instance.getPrizePool(cb));
-        
+
         await promisify(cb => instance.joinGame({
             from: account,
             value: prizePool,
@@ -36,23 +30,25 @@ var Service = function () {
     }
 
     this.resignGame = async function (gameContract) {
-        var instance = service.getInstance(gameContract);
+        var instance = getInstance(gameContract);
 
         await promisify(cb => instance.resignGame({ gas: 100000 }, cb));
     }
 
     this.tryClaimWinOnTime = async function (gameContract) {
-        var instance = service.getInstance(gameContract);
+        var instance = getInstance(gameContract);
 
         await promisify(cb => instance.tryClaimWinOnTime({ gas: 100000 }, cb));
     }
 
     this.getGames = function () {
-        return sessionStorage['game-contracts'].split(',');
+        return sessionStorage['game-contracts'] ?
+            sessionStorage['game-contracts'].split(',') :
+            [];
     }
 
     this.getGame = async function (address) {
-        var instance = self.getInstance(address);
+        var instance = getInstance(address);
 
         try {
             var game = {
@@ -75,7 +71,7 @@ var Service = function () {
     }
 
     this.getGameMoves = async function (gameContract) {
-        var instance = self.getInstance(gameContract);
+        var instance = getInstance(gameContract);
         var moves = [];
         var halfMovesCount = await promisify(cb => instance.getHalfMovesCount(cb));
 
@@ -86,16 +82,14 @@ var Service = function () {
         return moves;
     }
 
-    this.addGame = function (gameContract) {
-        if (sessionStorage['game-contracts']) {
-            sessionStorage['game-contracts'] += ',' + gameContract;
-        } else {
-            sessionStorage['game-contracts'] = gameContract;
-        }
+    this.getPlayerToMove = async function (gameContract) {
+        var instance = getInstance(gameContract);
+        
+        return await promisify(cb => instance.playerToMove(cb));
     }
 
     this.makeMove = async function (gameContract, move) {
-        var instance = self.getInstance(gameContract);
+        var instance = getInstance(gameContract);
 
         await promisify(cb => instance.makeMove(move, { gas: 100000 }, (err, result) => {
             if (!err) {
@@ -106,9 +100,21 @@ var Service = function () {
                     data: JSON.stringify({
                         contract: gameContract
                     })
-                  });
+                });
             }
         }));
+    }
+
+    function getInstance (address) {
+        return contract.prototype.at(address);
+    }
+
+    function addGame(gameContract) {
+        if (sessionStorage['game-contracts']) {
+            sessionStorage['game-contracts'] += ',' + gameContract;
+        } else {
+            sessionStorage['game-contracts'] = gameContract;
+        }
     }
 };
 

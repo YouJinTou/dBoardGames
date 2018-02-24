@@ -1,24 +1,63 @@
 extends layout
 
 block content
-    div
-        label Wager
-        input(id='wager', type='text')
+    div#main-container.container
+        div.row
+            div.col-xs-6
+                div#create-box.row
+                    div.col-xs-12
+                        div.row
+                            div.col-xs-9
+                                div.row.form-group
+                                    div.col-xs-12
+                                        label Wager in ether
+                                        input(id='wager', type='text', placeholder='For example, 0.001' class='form-control')
 
-        label Duration per move
-        input(id='move-duration', type='text')
+                                div.row.form-group
+                                    div.col-xs-12
+                                        label Duration per move
+                                        select#move-duration.form-control
+                                            option(value=(30 * 60)) 30 minutes
+                                            option(value=(60 * 60)) 1 hour
+                                            option(value=(2 * 60 * 60)) 2 hours
+                                            option(value=(5 * 60 * 60)) 5 hours
+                                            option(value=(24 * 60 * 60)) 1 day
+                                            option(value=(3 * 24 * 60 * 60)) 3 days
+                                            option(value=(7 * 24 * 60 * 60)) 1 week
+                                            option(value=(2 * 7 * 24 * 60 * 60)) 2 weeks
+                                            option(value=(30 * 24 * 60 * 60)) 1 month
+                            div.col-xs-3
+                                div.row
+                                    button(id='btn-create', type='button' class='btn btn-success') Create game
 
-        button(id='btn-create', type='button') Create game
+                        div.row
+                            button(id='btn-list', type='button' class='btn btn-primary') List games
 
-    div
-        button(id='btn-list', type='button') List games
+                        div.row
+                            div.col-xs-12
+                                div.game-template.display-none
+                                    h5 Address
+                                    h6.address
+                                    h5 Current move
+                                    h5.move
+                                    h5 Time per move
+                                    h6.move-duration    
+                                    h5 Pot
+                                    h6.in-play
+                                    h5 Game ended
+                                    h6.ended
 
-    div
-        ul#games-list
-            h3 No games yet.
+                                ul#games-list
+                                    h3 No games yet.
 
-    div
-        div#board(style='width: 300px')
-        sub#to-move
-        button(id='btn-resign', type='button', hidden='hidden') Resign
-        button(id='btn-claim-win', type='button', hidden='hidden') Try to Claim a Win on Time
+            div#board-box.col-xs-6.display-none
+                div#board
+
+                div.game-info
+                    span To move: 
+                    span#to-move
+
+                div.board-controls
+                    button(id='btn-resign', type='button', class='btn btn-danger') Resign
+                    button(id='btn-claim-win', type='button', class='btn btn-default') Claim Win on Time
+                    button(id='btn-hide-board', type='button', class='btn btn-basic') Hide                

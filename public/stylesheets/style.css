@@ -1,8 +1,91 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: black;
 }
 
-a {
-  color: #00B7FF;
+.display-none {
+  display: none;
+}
+
+label {
+  color: white;
+}
+
+#main-title {
+  width: 50%;
+  margin: 0 auto;
+  color: white;
+}
+
+#board {
+  width: 500px;
+}
+
+.game-info {
+  color: white;
+}
+
+#btn-create {
+  margin-left: 30px;
+  margin-top: 25px;
+}
+
+#games-list {
+  padding-left: 0px;
+}
+
+  #games-list li {
+    margin: 10px 10px 10px 0px;
+    font-size: 12px;
+    list-style-type: none;
+  }
+
+  #games-list h5 {
+    color: white;
+  }
+
+  #games-list h6 {
+    color: #aaa;
+  }
+
+.short-view-holder {
+  background-color: rgba(23, 121, 3, 0.8);
+  padding: 5px;
+  margin-bottom: 5px;
+}
+
+  .short-view-holder:hover {
+    cursor: pointer;
+  }
+
+.short-join-holder {
+  background-color: rgba(201, 84, 5, 0.8);
+  padding: 5px;
+  margin-bottom: 5px;
+}
+
+  .short-join-holder:hover {
+    cursor: pointer;
+  }
+
+.short {
+  font-size: 12px;
+}
+
+#board-box {
+  margin-left: 300px;
+}
+
+.board-controls .btn {
+  margin: 10px;
+}
+
+.col-xs-12 {
+  width: 100%;
+}
+
+.form-group {
+  margin-left: 0px;
+  margin-right: 0px;
 }

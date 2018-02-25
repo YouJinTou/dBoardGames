@@ -1,4 +1,6 @@
 var Service = function () {
+    var self = this;
+
     this.createGame = async function (account, wager, durationPerMove) {
         await promisify(cb => contract.prototype.new(
             durationPerMove,
@@ -11,9 +13,9 @@ var Service = function () {
                 if (error) {
                     booxbot.alert(error);
                 }
-
+                
                 if (result.address) {
-                    addGame(result.address);
+                    self.addGame(result.address);
                 }
             }));
     }
@@ -43,7 +45,7 @@ var Service = function () {
 
     this.getGames = function () {
         return sessionStorage['game-contracts'] ?
-            sessionStorage['game-contracts'].split(',') :
+            JSON.parse(sessionStorage['game-contracts']) :
             [];
     }
 
@@ -70,6 +72,20 @@ var Service = function () {
         }
     }
 
+    this.addGame = function (gameContract) {
+        if (sessionStorage['game-contracts']) {
+            var contracts = JSON.parse(sessionStorage['game-contracts']);
+
+            if (!contracts.includes(gameContract)) {
+                contracts.push(gameContract);
+
+                sessionStorage['game-contracts'] = JSON.stringify(contracts);
+            }
+        } else {
+            sessionStorage['game-contracts'] = JSON.stringify([gameContract]);
+        }
+    }
+
     this.getGameMoves = async function (gameContract) {
         var instance = getInstance(gameContract);
         var moves = [];
@@ -84,7 +100,7 @@ var Service = function () {
 
     this.getPlayerToMove = async function (gameContract) {
         var instance = getInstance(gameContract);
-        
+
         return await promisify(cb => instance.playerToMove(cb));
     }
 
@@ -105,16 +121,8 @@ var Service = function () {
         }));
     }
 
-    function getInstance (address) {
+    function getInstance(address) {
         return contract.prototype.at(address);
-    }
-
-    function addGame(gameContract) {
-        if (sessionStorage['game-contracts']) {
-            sessionStorage['game-contracts'] += ',' + gameContract;
-        } else {
-            sessionStorage['game-contracts'] = gameContract;
-        }
     }
 };
 

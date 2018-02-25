@@ -30,9 +30,16 @@ block content
                                 div.row
                                     button(id='btn-create', type='button' class='btn btn-success') Create game
 
+                        div.row#search-row
+                            div.col-xs-10
+                                label Search
+                                input(id='game-address', type='text', placeholder='Game address' class='form-control')
+                            div.col-xs-2
+                                button(id='btn-search', type='button' class='btn btn-default') Go
+                        
                         div.row
                             button(id='btn-list', type='button' class='btn btn-primary') List games
-
+                            
                         div.row
                             div.col-xs-12
                                 div.game-template.display-none

@@ -58,6 +58,18 @@ $('#btn-list').on('click', async function () {
     }
 });
 
+$('#btn-search').on('click', async function () {
+    var address = $(this).prev().val();
+
+    if (/^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address)) {
+        service.addGame(address);
+
+        $('#btn-list').click();
+    } else {
+        bootbox.alert('This does not appear to be a valid address.');
+    }
+})
+
 $('#btn-create').on('click', async function () {
     if (!/^(\d+(\.\d{1,18})?){1}$/.test($('#wager').val())) {
         bootbox.alert('Ether amount must be a number with up to 18 decimal places.');

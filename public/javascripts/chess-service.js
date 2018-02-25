@@ -118,7 +118,7 @@ var Service = function () {
                     })
                 });
 
-                bootbox.alert('Please refresh the game.');
+                bootbox.alert('Move transaction pending...');
             }
         }));
     }

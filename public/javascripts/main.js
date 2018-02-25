@@ -39,7 +39,7 @@ $(document).ready(() => {
     $(document).on('click', '.btn-joinable', async function () {
         await service.joinGame(initializer.account, $(this).data('game-address'));
 
-        bootbox.alert('Please refresh the game.');
+        bootbox.alert('Join transaction pending...');
     });
 
     $(document).on('click', '.btn-viewable', async function () {

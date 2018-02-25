@@ -2,7 +2,7 @@ $(document).ready(() => {
     var currentMove = 0;
 
     $('#btn-list').on('click', async function () {
-        
+        await populateList();
     });
 
     $('#btn-search').on('click', async function () {

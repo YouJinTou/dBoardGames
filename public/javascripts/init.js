@@ -9,10 +9,9 @@ var Initializer = function Initializer() {
 
                 window.web3 = new Web3(web3.currentProvider);
             } else {
-                console.log('Running locally.');
+                bootbox.alert('You need to install MetaMask. Try https://metamask.io/');
 
-                window.web3 = new Web3(
-                    new Web3.providers.HttpProvider("https://ropsten.infura.io/Mjg9P5FAlAk5TUZqjizC"));
+                return;
             }
 
             setAccount();

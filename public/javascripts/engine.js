@@ -41,6 +41,16 @@ var Engine = function (address) {
         }
     }
 
+    this.goToMove = function (move, moves) {
+        board = ChessBoard('board', self.config);
+
+        for (var m = 0; m <= move; m++) {
+            makeMove(moves[m]);
+        }
+
+        board.position(chess.fen(), false);
+    }
+
     function makeMove(move) {
         var moveValid = chess.move(move, { sloppy: true });
 

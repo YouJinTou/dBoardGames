@@ -120,6 +120,10 @@ label {
   margin-left: 300px;
 }
 
+.game-controls .btn {
+  margin: 10px;
+}
+
 .board-controls .btn {
   margin: 10px;
 }

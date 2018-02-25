@@ -91,7 +91,7 @@ var Service = function () {
         var moves = [];
         var halfMovesCount = await promisify(cb => instance.getHalfMovesCount(cb));
 
-        for (var i = 1; i <= halfMovesCount.c; i++) {
+        for (var i = 1; i < halfMovesCount.c; i++) {
             moves.push(await promisify(cb => instance.getHalfMove(i, cb)));
         }
 
@@ -117,6 +117,8 @@ var Service = function () {
                         contract: gameContract
                     })
                 });
+
+                bootbox.alert('Please refresh the game.');
             }
         }));
     }

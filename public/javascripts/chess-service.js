@@ -11,7 +11,7 @@ var Service = function () {
                 gas: 1777777
             }, function (error, result) {
                 if (error) {
-                    booxbot.alert(error);
+                    bootbox.alert(error);
                 }
                 
                 if (result.address) {

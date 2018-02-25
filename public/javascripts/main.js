@@ -59,7 +59,7 @@ $('#btn-list').on('click', async function () {
 });
 
 $('#btn-search').on('click', async function () {
-    var address = $(this).prev().val();
+    var address = $('#search-row').find('#game-address').val();
 
     if (/^(0x)?[0-9A-Fa-f]{40}$/.test(address)) {
         service.addGame(address);

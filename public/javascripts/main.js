@@ -2,63 +2,7 @@ $(document).ready(() => {
     var currentMove = 0;
 
     $('#btn-list').on('click', async function () {
-        var games = service.getGames();
-
-        if (!games.length) {
-            return;
-        }
-
-        var $gamesList = $('#games-list');
-        var $template = $('.game-template').first();
-
-        $gamesList.empty();
-
-        for (var g = 0; g < games.length; g++) {
-            var game = await service.getGame(games[g]);
-
-            if (!game) {
-                continue;
-            }
-
-            var pot = web3.fromWei(game.prizePool, 'ether') + ' ether';
-            var duration = game.durationPerMove / 3600 + ' h';
-            var $li = $('<li/>');
-            var $current = $template.clone();
-            var $potLabel = $('<h5 />').addClass('short').text('Pot');
-            var $pot = $('<h6 />').addClass('short').text(pot);
-            var $durationLabel = $('<h5 />').addClass('short').text('Time per move');
-            var $duration = $('<h6 />').addClass('short').text(duration)
-            var $div = $('<div />')
-                .addClass('btn-actionable')
-                .attr('data-game-address', games[g])
-                .append($potLabel)
-                .append($pot)
-                .append($durationLabel)
-                .append($duration);
-
-            if (game.gameEnded) {
-                $div.addClass('btn-readonly');
-                $div.addClass('short-end-holder');
-            } else if (game.gameStarted) {
-                $div.addClass('btn-viewable');
-                $div.addClass('short-view-holder');
-            }
-            else {
-                $div.addClass('btn-joinable');
-                $div.addClass('short-join-holder');
-            }
-
-            $li.append($div);
-
-            $current.find('.address').text(game.address);
-            $current.find('.move').text(game.currentMove);
-            $current.find('.move-duration').text(duration);
-            $current.find('.in-play').text(pot);
-            $current.find('.ended').text(game.gameEnded ? 'Yes' : 'No');
-
-            $li.append($current);
-            $li.appendTo($gamesList);
-        }
+        
     });
 
     $('#btn-search').on('click', async function () {
@@ -67,7 +11,7 @@ $(document).ready(() => {
         if (/^(0x)?[0-9A-Fa-f]{40}$/.test(address)) {
             service.addGame(address);
 
-            $('#btn-list').click();
+            await populateList();
         } else {
             bootbox.alert('This does not appear to be a valid address.');
         }
@@ -157,6 +101,66 @@ $(document).ready(() => {
 
         $(document).find('.game-template').hide();
     });
+
+    async function populateList() {
+        var games = service.getGames();
+
+        if (!games.length) {
+            return;
+        }
+
+        var $gamesList = $('#games-list');
+        var $template = $('.game-template').first();
+
+        $gamesList.empty();
+
+        for (var g = 0; g < games.length; g++) {
+            var game = await service.getGame(games[g]);
+
+            if (!game) {
+                continue;
+            }
+
+            var pot = web3.fromWei(game.prizePool, 'ether') + ' ether';
+            var duration = game.durationPerMove / 3600 + ' h';
+            var $li = $('<li/>');
+            var $current = $template.clone();
+            var $potLabel = $('<h5 />').addClass('short').text('Pot');
+            var $pot = $('<h6 />').addClass('short').text(pot);
+            var $durationLabel = $('<h5 />').addClass('short').text('Time per move');
+            var $duration = $('<h6 />').addClass('short').text(duration)
+            var $div = $('<div />')
+                .addClass('btn-actionable')
+                .attr('data-game-address', games[g])
+                .append($potLabel)
+                .append($pot)
+                .append($durationLabel)
+                .append($duration);
+
+            if (game.gameEnded) {
+                $div.addClass('btn-readonly');
+                $div.addClass('short-end-holder');
+            } else if (game.gameStarted) {
+                $div.addClass('btn-viewable');
+                $div.addClass('short-view-holder');
+            }
+            else {
+                $div.addClass('btn-joinable');
+                $div.addClass('short-join-holder');
+            }
+
+            $li.append($div);
+
+            $current.find('.address').text(game.address);
+            $current.find('.move').text(game.currentMove);
+            $current.find('.move-duration').text(duration);
+            $current.find('.in-play').text(pot);
+            $current.find('.ended').text(game.gameEnded ? 'Yes' : 'No');
+
+            $li.append($current);
+            $li.appendTo($gamesList);
+        }
+    }
 
     function showBoardBox(gameAddress) {
         $('#btn-resign,#btn-claim-win,#btn-hide-board,#btn-prev,#btn-next')

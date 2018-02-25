@@ -9,7 +9,7 @@ var Service = function () {
                 gas: 1777777
             }, function (error, result) {
                 if (error) {
-                    alert(error);
+                    booxbot.alert(error);
                 }
 
                 if (result.address) {
@@ -64,7 +64,7 @@ var Service = function () {
 
             return game;
         } catch (err) {
-            console.log(err);
+            bootbox.alert(err);
 
             return null;
         }

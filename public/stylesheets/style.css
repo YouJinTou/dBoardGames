@@ -67,6 +67,24 @@ label {
     cursor: pointer;
   }
 
+  .short-end-holder {
+    background-color: rgba(97, 95, 95, 0.8);
+    padding: 5px;
+    margin-bottom: 5px;
+  }
+  
+    .short-end-holder::before {
+      content: 'View';
+      display: inline;
+      float: right;
+      font-size: 25px;
+      color: white;
+    }
+  
+    .short-end-holder:hover {
+      cursor: pointer;
+    }
+
 .short-join-holder {
   background-color: rgba(201, 84, 5, 0.8);
   padding: 5px;

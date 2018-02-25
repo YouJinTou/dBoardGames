@@ -33,10 +33,14 @@ $('#btn-list').on('click', async function () {
             .append($durationLabel)
             .append($duration);
 
-        if (game.gameStarted) {
+        if (game.gameEnded) {
+            $div.addClass('btn-readonly');
+            $div.addClass('short-end-holder');
+        } else if (game.gameStarted) {
             $div.addClass('btn-viewable');
             $div.addClass('short-view-holder');
-        } else {
+        }
+        else {
             $div.addClass('btn-joinable');
             $div.addClass('short-join-holder');
         }
@@ -86,14 +90,24 @@ $(document).on('click', '.btn-joinable', async function () {
 });
 
 $(document).on('click', '.btn-viewable', async function () {
-    var gameMoves = await service.getGameMoves($(this).data('game-address'));
-    var engine = new Engine($(this).data('game-address'));
-
-    engine.setGame(gameMoves);
+    await setGame($(this).data('game-address'));
 
     $('#to-move').text(await service.getPlayerToMove($(this).data('game-address')));
 
     showBoardBox($(this).data('game-address'));
+});
+
+$(document).on('click', '.btn-readonly', async function () {
+    await setGame($(this).data('game-address'));
+
+    $('#to-move').text('Game ended.');
+
+    $('#btn-hide-board')
+        .attr('data-game-address', $(this).data('game-address'))
+        .show();
+    $('#btn-resign,#btn-claim-win').hide();
+
+    $(document).find('#board-box').show();
 });
 
 $(document).on('click', '#btn-resign', async function () {
@@ -116,4 +130,11 @@ function showBoardBox(gameAddress) {
         .show();
 
     $(document).find('#board-box').show();
+}
+
+async function setGame(gameAddress) {
+    var gameMoves = await service.getGameMoves(gameAddress);
+    var engine = new Engine(gameAddress);
+
+    engine.setGame(gameMoves);
 }

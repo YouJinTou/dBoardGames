@@ -5,7 +5,7 @@ var Initializer = function Initializer() {
     this.init = function () {
         window.addEventListener('load', function () {
             if (typeof web3 !== 'undefined') {
-                console.log('Metamask ON.');
+                bootbox.alert('Metamask ON.');
 
                 window.web3 = new Web3(web3.currentProvider);
             } else {

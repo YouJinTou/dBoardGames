@@ -9,7 +9,7 @@ var Initializer = function Initializer() {
 
                 window.web3 = new Web3(web3.currentProvider);
             } else {
-                bootbox.alert('You need to install MetaMask. Try https://metamask.io/');
+                bootbox.alert('You need to install MetaMask to use this app. Try https://metamask.io/');
 
                 return;
             }

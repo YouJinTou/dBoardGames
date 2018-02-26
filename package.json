@@ -1,6 +1,9 @@
 {
   "name": "dboardgames",
   "version": "1.0.0",
+  "engines": {
+    "node": "8.9.4"
+  },
   "description": "Decentralized board games",
   "main": "server.js",
   "scripts": {

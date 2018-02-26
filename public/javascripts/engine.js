@@ -30,7 +30,7 @@ var Engine = function (address) {
 
     this.setGame = function (moves) {
         board = ChessBoard('board', self.config);
-
+        
         if (moves) {
             for (var m = 0; m < moves.length; m++) {
                 makeMove(moves[m]);
@@ -49,11 +49,17 @@ var Engine = function (address) {
         }
 
         board.position(chess.fen(), false);
+
+        board.orientation(getOrientationPermanent(moves));
     }
 
     function makeMove(move) {
         var moveValid = chess.move(move, { sloppy: true });
 
         return moveValid;
+    }
+
+    function getOrientationPermanent(moves) {
+        return ((moves.length % 2) === 0) ? 'white' : 'black';
     }
 };

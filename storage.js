@@ -1,5 +1,6 @@
 var mongo = require('mongodb').MongoClient;
 const endpoint = process.env.MONGODB_URI || 'mongodb://localhost:27017/dBoardGames';
+const dbName = process.env.MONGODB_URI ? 'heroku_0hf5z321' : 'dBoardGames';
 
 module.exports = {
     getContracts: (cb) => {
@@ -8,7 +9,7 @@ module.exports = {
                 throw err;
             }
 
-            var db = database.db('dBoardGames');
+            var db = database.db(dbName);
             var contracts = new Set();
             var cursor = db.collection('contracts').find();
 
@@ -29,7 +30,7 @@ module.exports = {
                 throw err;
             }
 
-            var db = database.db('dBoardGames')
+            var db = database.db(dbName)
             var contractObj = {
                 contract: contract
             };

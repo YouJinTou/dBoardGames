@@ -1,6 +1,8 @@
 extends layout
 
 block content
+    input(id='current-address', type='hidden')
+    
     div#main-container.container
         div.row
             div.col-xs-6
@@ -12,7 +14,7 @@ block content
                                     div.col-xs-12
                                         label Wager in ether
                                         input(id='wager', type='text', placeholder='For example, 0.001' class='form-control')
-
+                                        
                                 div.row.form-group
                                     div.col-xs-12
                                         label Duration per move

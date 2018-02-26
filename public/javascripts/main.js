@@ -47,6 +47,7 @@ $(document).ready(() => {
     });
 
     $(document).on('click', '.btn-viewable', async function () {
+        $('#current-address').text($(this).data('game-address'));
         await setGame($(this).data('game-address'));
 
         $('#to-move').text(await service.getPlayerToMove($(this).data('game-address')));
@@ -67,24 +68,24 @@ $(document).ready(() => {
         $(document).find('#board-box').show();
     });
 
-    $(document).on('click', '#btn-prev', async function () {
+    $(document).on('click', '#btn-prev', function () {
         if (currentMove === -1) {
             return;
         }
 
         currentMove--;
-        var engine = new Engine($(this).data('game-address'));
-        var moves = JSON.parse(sessionStorage['game-' + $(this).data('game-address')]);
+        var engine = new Engine($('#current-address').text());
+        var moves = JSON.parse(sessionStorage['game-' + $('#current-address').text()]);
 
         engine.goToMove(currentMove, moves);
     });
 
-    $(document).on('click', '#btn-next', async function () {
+    $(document).on('click', '#btn-next', function () {
         currentMove++;
-        var moves = JSON.parse(sessionStorage['game-' + $(this).data('game-address')]);
-        
+        var moves = JSON.parse(sessionStorage['game-' + $('#current-address').text()]);
+
         if (moves.length > currentMove) {
-            var engine = new Engine($(this).data('game-address'));
+            var engine = new Engine($('#current-address').text());
 
             engine.goToMove(currentMove, moves);
         } else {

@@ -1,5 +1,5 @@
 var mongo = require('mongodb').MongoClient;
-const endpoint = 'mongodb://localhost:27017/dBoardGames'
+const endpoint = process.env.MONGOLAB_URI || 'mongodb://localhost:27017/dBoardGames';
 
 module.exports = {
     getContracts: (cb) => {

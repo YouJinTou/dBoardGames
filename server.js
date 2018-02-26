@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const validator = require('./validator.js');
 const web3 = require('./web3.js');
+const storage = require('./storage.js');
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -15,6 +16,22 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => res.render('index', {
     title: 'dBoardGames'
 }));
+
+app.get('/contracts', (req, res) => {
+    storage.getContracts((contracts) => {
+        res.send(Array.from(contracts));
+    });
+});
+
+app.post('/contracts', (req, res) => {
+    if (!req.body.contract) {
+        res.status(400).send();
+    }
+
+    storage.addContract(req.body.contract, () => {
+        res.status(200).send();
+    });
+});
 
 app.post('/enforce', (req, res) => {
     if (!req.body.contract) {

@@ -20,7 +20,7 @@ app.get('/', (req, res) => res.render('index', {
 app.get('/contracts', (req, res) => {
 
     storage.getContracts((contracts) => {
-        console.log('Contracts: ' + contracts);
+        console.log('Contracts: ' + Array.from(contracts));
 
         res.send(Array.from(contracts));
     });

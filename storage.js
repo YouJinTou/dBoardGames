@@ -3,12 +3,12 @@ const endpoint = process.env.MONGODB_URI || 'mongodb://localhost:27017/dBoardGam
 
 module.exports = {
     getContracts: (cb) => {
-        mongo.connect(endpoint, (err, database) => {
+        mongo.connect(endpoint, (err, db) => {
             if (err) {
                 throw err;
             }
 
-            var db = database.db('dBoardGames');
+            // var db = database.db('dBoardGames');
             var contracts = new Set();
             var cursor = db.collection('contracts').find();
 
@@ -17,19 +17,19 @@ module.exports = {
                     contracts.add(doc.contract);
                 }
             }, () => {
-                database.close();
+                db.close();
                 
                 cb(contracts);
             });
         });
     },
     addContract: (contract, cb) => {
-        mongo.connect(endpoint, (err, database) => {
+        mongo.connect(endpoint, (err, db) => {
             if (err) {
                 throw err;
             }
 
-            var db = database.db('dBoardGames')
+            // var db = database.db('dBoardGames')
             var contractObj = {
                 contract: contract
             };
@@ -37,7 +37,7 @@ module.exports = {
             db.collection('contracts').insertOne(contractObj, (err, result) => {
                 cb(result);
 
-                database.close();
+                db.close();
             });
         });
     }

@@ -18,13 +18,16 @@ app.get('/', (req, res) => res.render('index', {
 }));
 
 app.get('/contracts', (req, res) => {
+    console.log(req.body);
+    
     storage.getContracts((contracts) => {
         res.send(Array.from(contracts));
     });
 });
 
 app.post('/contracts', (req, res) => {
-    console.log(req.body)
+    console.log(req.body);
+
     if (!req.body.contract) {
         res.status(400).send();
     }
@@ -35,6 +38,8 @@ app.post('/contracts', (req, res) => {
 });
 
 app.post('/enforce', (req, res) => {
+    console.log(req.body);
+
     if (!req.body.contract) {
         res.status(400).send();
     }

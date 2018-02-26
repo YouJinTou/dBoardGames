@@ -34,7 +34,11 @@ module.exports = {
                 contract: contract
             };
 
+            console.log(contractObj);
+
             db.collection('contracts').insertOne(contractObj, (err, result) => {
+                console.log(result);
+
                 cb(result);
 
                 database.close();

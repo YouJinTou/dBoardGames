@@ -13,7 +13,7 @@ var Service = function () {
                 if (error) {
                     bootbox.alert(error);
                 }
-                
+
                 if (result.address) {
                     self.addGame(result.address);
                 }
@@ -43,13 +43,21 @@ var Service = function () {
         await promisify(cb => instance.tryClaimWinOnTime({ gas: 100000 }, cb));
     }
 
-    this.getGames = function () {
-        return sessionStorage['game-contracts'] ?
-            JSON.parse(sessionStorage['game-contracts']) :
-            [];
+    this.getGames = async function () {
+        var gameContracts = [];
+
+        await $.when($.get('/contracts', (contracts) => {
+            gameContracts = contracts;
+        }));
+
+        return gameContracts;
     }
 
     this.getGame = async function (address) {
+        if (!address) {
+            return null;
+        }
+
         var instance = getInstance(address);
 
         try {
@@ -66,24 +74,25 @@ var Service = function () {
 
             return game;
         } catch (err) {
-            bootbox.alert(err);
+            console.log('Could not fetch game ' + address);
 
             return null;
         }
     }
 
-    this.addGame = function (gameContract) {
-        if (sessionStorage['game-contracts']) {
-            var contracts = JSON.parse(sessionStorage['game-contracts']);
-
-            if (!contracts.includes(gameContract)) {
-                contracts.push(gameContract);
-
-                sessionStorage['game-contracts'] = JSON.stringify(contracts);
-            }
-        } else {
-            sessionStorage['game-contracts'] = JSON.stringify([gameContract]);
-        }
+    this.addGame = async function (gameContract) {
+        await $.when($.ajax({
+            type: 'POST',
+            url: '/contracts',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                contract: gameContract
+            })
+        }).done(() => {
+            bootbox.alert('Successfully added game.');
+        }).fail((asd) => {
+            bootbox.alert('Could not add game.');
+        }));
     }
 
     this.getGameMoves = async function (gameContract) {

@@ -1,6 +1,8 @@
 $(document).ready(() => {
     var currentMove = 0;
 
+    populateList();
+
     $('#btn-list').on('click', async function () {
         await populateList();
     });
@@ -9,12 +11,14 @@ $(document).ready(() => {
         var address = $('#search-row').find('#game-address').val();
 
         if (/^(0x)?[0-9A-Fa-f]{40}$/.test(address)) {
-            service.addGame(address);
+            await service.addGame(address);
 
             await populateList();
         } else {
             bootbox.alert('This does not appear to be a valid address.');
         }
+
+        $('#search-row').find('#game-address').val('');
     })
 
     $('#btn-create').on('click', async function () {
@@ -103,7 +107,7 @@ $(document).ready(() => {
     });
 
     async function populateList() {
-        var games = service.getGames();
+        var games = await service.getGames();
 
         if (!games.length) {
             return;

@@ -24,6 +24,7 @@ app.get('/contracts', (req, res) => {
 });
 
 app.post('/contracts', (req, res) => {
+    console.log(req.body)
     if (!req.body.contract) {
         res.status(400).send();
     }

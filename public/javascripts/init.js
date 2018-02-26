@@ -27,7 +27,7 @@ var Initializer = function Initializer() {
             }
 
             if (accs.length == 0) {
-                bootbox.alert('No accounts. Make sure your Ethereum client is configured correctly');
+                bootbox.alert('No accounts. Make sure your Ethereum client is configured correctly.');
 
                 return;
             }

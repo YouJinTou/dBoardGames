@@ -18,9 +18,10 @@ app.get('/', (req, res) => res.render('index', {
 }));
 
 app.get('/contracts', (req, res) => {
-    console.log(req.body);
-    
+
     storage.getContracts((contracts) => {
+        console.log('Contracts: ' + contracts);
+
         res.send(Array.from(contracts));
     });
 });

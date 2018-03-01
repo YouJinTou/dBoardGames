@@ -133,6 +133,8 @@ $(document).ready(() => {
             var duration = game.durationPerMove / 3600 + ' h';
             var $li = $('<li/>');
             var $current = $template.clone();
+            var $addressLabel = $('<h5 />').addClass('short').text('Address');
+            var $address = $('<h6 />').addClass('short').text(game.address);
             var $potLabel = $('<h5 />').addClass('short').text('Pot');
             var $pot = $('<h6 />').addClass('short').text(pot);
             var $durationLabel = $('<h5 />').addClass('short').text('Time per move');
@@ -140,6 +142,8 @@ $(document).ready(() => {
             var $div = $('<div />')
                 .addClass('btn-actionable')
                 .attr('data-game-address', games[g])
+                .append($addressLabel)
+                .append($address)
                 .append($potLabel)
                 .append($pot)
                 .append($durationLabel)

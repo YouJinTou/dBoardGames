@@ -48,6 +48,7 @@ $(document).ready(() => {
 
     $(document).on('click', '.btn-viewable', async function () {
         $('#current-address').text($(this).data('game-address'));
+        
         await setGame($(this).data('game-address'));
 
         $('#to-move').text(await service.getPlayerToMove($(this).data('game-address')));
@@ -56,11 +57,13 @@ $(document).ready(() => {
     });
 
     $(document).on('click', '.btn-readonly', async function () {
+        $('#current-address').text($(this).data('game-address'));
+        
         await setGame($(this).data('game-address'));
 
         $('#to-move').text('Game ended.');
 
-        $('#btn-hide-board')
+        $('#btn-hide-board,#btn-prev,#btn-next')
             .attr('data-game-address', $(this).data('game-address'))
             .show();
         $('#btn-resign,#btn-claim-win').hide();
